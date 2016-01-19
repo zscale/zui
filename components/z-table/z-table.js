@@ -233,4 +233,39 @@ zTable = function(table) {
     elem.appendChild(thead);
     elem.appendChild(tbody);
   };
+
+  this.toCSV = function(opts) {
+    opts = opts || {};
+    opts.row_separator = opts.row_separator || "\n";
+    opts.column_separator = opts.column_separator || ",";
+    opts.quote_char = opts.quote_char || "\"";
+
+    var csv = "";
+    var add_row = function(row) {
+      var r = row.map(function(s) {
+        while (s.indexOf(opts.quote_char) >= 0) {
+          s = s.replace(opts.quote_char, "\\" + opts.quote_char);
+        }
+
+        return opts.quote_char + s + opts.quote_char;
+      })
+
+      csv += r.join(opts.column_separator) + opts.row_separator;
+    }
+
+    var column_names = table.columns.map(function(c) { return c.key; });
+    add_row(column_names);
+
+    table.rows.forEach(function(row) {
+      var r = [];
+      for (var i = 0; i < column_names.length; ++i) {
+        var cell = row.cells[column_names[i]];
+        r.push(cell ? cell.value : null);
+      }
+      add_row(r);
+    });
+
+    return csv;
+  }
+
 }
