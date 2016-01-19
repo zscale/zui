@@ -44,3 +44,9 @@ eventsource.js
 --------------
 Available under MIT License (MIT)
 https://github.com/Yaffle/EventSource/
+
+
+download.js
+-----------
+download.js v4.1, by dandavis; 2008-2015. [CCBY2] see http://danml.com/download.html for tests/usage
+ https://github.com/rndme/download
