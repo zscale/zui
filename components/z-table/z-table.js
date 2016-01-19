@@ -93,18 +93,6 @@ zTable = function(table) {
     on_sort.push(fn);
   }
 
-  this.setSort = function(column_name, direction) {
-    if (table.columns) {
-      for (var i = 0; i < table.columns.length; ++i) {
-        if (table.columns[i].key == column_name) {
-          table.columns[i].sorted = direction;
-        } else {
-          delete table.columns[i].sorted;
-        }
-      }
-    }
-  }
-
   this.sortByColumn = function(column_name, direction) {
     var comparator;
     if (table.columns) {
