@@ -32,7 +32,11 @@
 var zViewport = function(elem) {
   var current_view;
 
-  this.render = function(view, params) {
+  this.getView = function() {
+    return current_view;
+  }
+
+  this.setView = function(view, params) {
     if (current_view && current_view.destroy) {
       current_view.destroy();
     }
