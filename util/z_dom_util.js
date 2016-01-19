@@ -35,3 +35,27 @@ zDomUtil.replaceContent = function(elem, new_content) {
   elem.innerHTML = "";
   elem.appendChild(new_content);
 }
+
+zDomUtil.onClick = function(elem, fn) {
+  elem.addEventListener("click", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    fn.call(this, e);
+    return false;
+  });
+};
+
+zDomUtil.handleLinks = function(elem, fn) {
+  var click_fn = (function() {
+    return function(e) {
+      fn(this.getAttribute("href"));
+      e.preventDefault();
+      return false;
+    };
+  })();
+
+  var elems = elem.querySelectorAll("a");
+  for (var i = 0; i < elems.length; ++i) {
+    elems[i].addEventListener("click", click_fn);
+  }
+};
