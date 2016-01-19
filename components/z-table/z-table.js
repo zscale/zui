@@ -32,6 +32,8 @@
 zTable = function(table) {
   table.rows = table.rows || [];
 
+  var on_sort = [];
+
   this.getColumns = function() {
     return table.columns;
   }
@@ -68,6 +70,10 @@ zTable = function(table) {
     });
 
     return result;
+  }
+
+  this.onSort = function(fn) {
+    on_sort.push(fn);
   }
 
   this.sortByColumn = function(column_name, direction) {
@@ -143,14 +149,19 @@ zTable = function(table) {
             break;
         }
 
-        //if (opts.on_sort) {
-        //  $.onClick(sort_asc, function() {
-        //    opts.on_sort(c, "asc");
-        //  });
-        //  $.onClick(sort_desc, function() {
-        //    opts.on_sort(c, "desc");
-        //  });
-        //}
+        var sort_fn = function(dir) {
+          on_sort.forEach(function(f) {
+            f(c, dir);
+          });
+        };
+
+        zDomUtil.onClick(sort_asc, function() {
+          sort_fn("asc");
+        });
+
+        zDomUtil.onClick(sort_desc, function() {
+          sort_fn("desc");
+        });
       }
 
       head_tr.appendChild(th)
