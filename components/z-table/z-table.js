@@ -33,6 +33,7 @@ zTable = function(table) {
   table.rows = table.rows || [];
 
   var on_sort = [];
+  var on_click = [];
 
   this.getColumns = function() {
     return table.columns;
@@ -87,6 +88,10 @@ zTable = function(table) {
     });
 
     return result;
+  }
+
+  this.onClick = function(fn) {
+    on_click.push(fn);
   }
 
   this.onSort = function(fn) {
@@ -223,6 +228,12 @@ zTable = function(table) {
         td_a.innerHTML = cell_value;
         td.appendChild(td_a)
         tr.appendChild(td)
+      });
+
+      zDomUtil.onClick(tr, function() {
+        on_click.forEach(function(f) {
+          f(row);
+        });
       });
 
       tbody.appendChild(tr)
