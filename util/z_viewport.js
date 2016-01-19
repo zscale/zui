@@ -41,7 +41,8 @@ var zViewport = function(elem) {
       elem.innerHTML = "";
     }
 
-    current_view = view(elem, params);
+    current_view = {};
+    view.call(current_view, elem, params);
   };
 
 };
