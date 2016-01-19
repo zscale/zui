@@ -243,6 +243,8 @@ zTable = function(table) {
     var csv = "";
     var add_row = function(row) {
       var r = row.map(function(s) {
+        s = s || "";
+
         while (s.indexOf(opts.quote_char) >= 0) {
           s = s.replace(opts.quote_char, "\\" + opts.quote_char);
         }
