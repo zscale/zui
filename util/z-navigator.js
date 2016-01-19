@@ -57,7 +57,7 @@ var zNavigator = function(win) {
     }, 0);
   }, false);
 
-  this.getCurrentPath = function() {
+  this.getPath = function() {
     return current_path;
   }
 
