@@ -49,7 +49,7 @@ zTable = function(table) {
   }
 
   this.getRows = function() {
-    return table.columns;
+    return table.rows;
   }
 
   this.setRows = function(rows) {
