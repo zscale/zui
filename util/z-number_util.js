@@ -99,33 +99,3 @@ zNumberUtil.formatDuration = function(value) {
 zNumberUtil.compareNumbers = function(a, b) {
   return (a ? parseFloat(a) : 0) - (b ? parseFloat(b) : 0);
 }
-
-zNumberUtil.formatTimestamp = function(timestamp, format) {
-  if (!format) {
-    format = "%Y-%m-%d %H:%M:%S";
-  }
-
-  var withLeadingZero = function(number) {
-    if (parseInt(number) < 10) {
-      return "0" + number;
-    }
-
-    return "" + number;
-  };
-
-  var date = new Date(parseInt(timestamp));
-  var date_str = format;
-  date_str = date_str.replace("%Y", date.getFullYear());
-  date_str = date_str.replace("%m", withLeadingZero(date.getMonth() + 1));
-  date_str = date_str.replace("%d", withLeadingZero(date.getDate()));
-  date_str = date_str.replace("%H", withLeadingZero(date.getHours()));
-  date_str = date_str.replace("%M", withLeadingZero(date.getMinutes()));
-  date_str = date_str.replace("%S", withLeadingZero(date.getSeconds()));
-  return date_str;
-};
-
-zNumberUtil.formatTimestampWithFormat = function(format) {
-  return function(timestamp) {
-    return zNumberUtil.formatTimestamp(timestamp, format);
-  }
-};
