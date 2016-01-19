@@ -56,6 +56,23 @@ zTable = function(table) {
     table.rows = rows;
   }
 
+  this.addRow = function(row) {
+    table.rows.push(row);
+  }
+
+  this.updateRows = function(key_column, updates) {
+    for (var i = 0; i < table.rows.length; ++i) {
+      var key_cell = table.rows[i].cells[key_column];
+      if (key_cell && updates.hasOwnProperty(key_cell.value)) {
+        var update = updates[key_cell.value];
+        for (k in update) {
+          table.rows[i].cells[k] = (table.rows[i].cells[k] || {});
+          table.rows[i].cells[k].value = update[k];
+        }
+      }
+    }
+  }
+
   this.getColumnValues = function(column_names) {
     var result = [];
     for (var i = 0; i < column_names.length; ++i) {
@@ -197,7 +214,7 @@ zTable = function(table) {
           }
 
           if (!cell_value) {
-            cell_value = opts.empty_cell_value || "—";
+            cell_value = table.empty_cell_value || "—";
           }
 
           cell_value = $.escapeHTML(cell_value);
