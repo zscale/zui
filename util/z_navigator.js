@@ -34,6 +34,11 @@ var zNavigator = function(win) {
   var current_path = win.location.pathname + win.location.search;
 
   var apply = function(path) {
+    if (path == current_path) {
+      return;
+    }
+
+    current_path = path;
     for (var i = 0; i < on_navigation_change.length; ++i) {
       on_navigation_change[i](path);
     }

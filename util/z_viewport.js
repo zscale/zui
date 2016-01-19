@@ -29,34 +29,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-zDomUtil = this.zDomUtil || {};
+var zViewport = function(elem) {
+  var current_view;
 
-zDomUtil.replaceContent = function(elem, new_content) {
-  elem.innerHTML = "";
-  elem.appendChild(new_content);
-}
+  this.render = function(view, params) {
+    if (current_view) {
+      if (current_view.destroy) {
+        current_view.destroy();
+      }
 
-zDomUtil.onClick = function(elem, fn) {
-  elem.addEventListener("click", function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    fn.call(this, e);
-    return false;
-  });
-};
+      elem.innerHTML = "";
+    }
 
-zDomUtil.handleLinks = function(elem, fn) {
-  var click_fn = (function() {
-    return function(e) {
-      fn(this.getAttribute("href"));
-      e.preventDefault();
-      e.stopPropagation();
-      return false;
-    };
-  })();
+    current_view = view(elem, params);
+  };
 
-  var elems = elem.querySelectorAll("a");
-  for (var i = 0; i < elems.length; ++i) {
-    elems[i].addEventListener("click", click_fn);
-  }
 };
