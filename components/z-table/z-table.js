@@ -140,10 +140,10 @@ zTable = function(table) {
     });
   }
 
-  this.hideColumns = function(selected_columns) {
+  this.setVisibleColumns = function(visible_columns) {
     if (table.columns) {
       table.columns.forEach(function(col) {
-        if (col.hideable && selected_columns.indexOf(col.key) < 0) {
+        if (visible_columns.indexOf(col.key) < 0) {
           col.hidden = true;
         } else {
           delete col.hidden;
