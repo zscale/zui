@@ -230,10 +230,11 @@ zTable = function(table) {
         tr.appendChild(td)
       });
 
-      zDomUtil.onClick(tr, function() {
+      tr.addEventListener("click", function(e) {
         on_click.forEach(function(f) {
           f(row);
         });
+        return false;
       });
 
       tbody.appendChild(tr)
