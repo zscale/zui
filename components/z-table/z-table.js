@@ -143,7 +143,7 @@ zTable = function(table) {
   this.hideColumns = function(selected_columns) {
     if (table.columns) {
       table.columns.forEach(function(col) {
-        if (col.hidable && selected_columns.indexOf(col.key) < 0) {
+        if (col.hideable && selected_columns.indexOf(col.key) < 0) {
           col.hidden = true;
         } else {
           delete col.hidden;
