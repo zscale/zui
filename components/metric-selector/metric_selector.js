@@ -1,4 +1,4 @@
-metricSelector = function(elem, metrics) {
+MetricSelector = function(elem, metrics) {
   var on_change = [];
 
   this.onChange = function(f) {
