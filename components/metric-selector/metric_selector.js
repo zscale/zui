@@ -19,6 +19,11 @@ MetricSelector = function(elem, metrics) {
     var selected_metrics = [];
 
     metrics.forEach(function(m) {
+      //metrics are per default hideable unless hideable = false is set
+      if (m.hideable == false) {
+        return;
+      }
+
       var item = document.createElement("z-dropdown-item");
       item.setAttribute("data-value", m.key);
       item.innerHTML = "<z-checkbox></z-checkbox> " + m.title;
