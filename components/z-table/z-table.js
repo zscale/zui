@@ -33,6 +33,7 @@ zTable = function(table) {
   table.rows = table.rows || [];
 
   var on_sort = [];
+  var on_click = [];
 
   this.getColumns = function() {
     return table.columns;
@@ -89,6 +90,10 @@ zTable = function(table) {
     return result;
   }
 
+  this.onClick = function(fn) {
+    on_click.push(fn);
+  }
+
   this.onSort = function(fn) {
     on_sort.push(fn);
   }
@@ -135,6 +140,18 @@ zTable = function(table) {
     });
   }
 
+  this.setVisibleColumns = function(visible_columns) {
+    if (table.columns) {
+      table.columns.forEach(function(col) {
+        if (visible_columns.indexOf(col.key) < 0 && col.hideable != false) {
+          col.hidden = true;
+        } else {
+          delete col.hidden;
+        }
+      });
+    }
+  };
+
   this.render = function(elem) {
     var thead = document.createElement("thead");
     var tbody = document.createElement("tbody");
@@ -144,6 +161,10 @@ zTable = function(table) {
     thead.appendChild(head_tr);
 
     table.columns.forEach(function(c) {
+      if (c.hidden) {
+        return;
+      }
+
       var th = document.createElement("th");
       th.setAttribute("align", c.align || "left");
       th.innerHTML = c.title;
@@ -189,6 +210,10 @@ zTable = function(table) {
       var tr = document.createElement("tr");
 
       table.columns.forEach(function(col) {
+        if (col.hidden) {
+          return;
+        }
+
         var cell = {};
         if (row.cells.hasOwnProperty(col.key)) {
           cell = row.cells[col.key];
@@ -223,6 +248,13 @@ zTable = function(table) {
         td_a.innerHTML = cell_value;
         td.appendChild(td_a)
         tr.appendChild(td)
+      });
+
+      tr.addEventListener("click", function(e) {
+        on_click.forEach(function(f) {
+          f(row);
+        });
+        return false;
       });
 
       tbody.appendChild(tr)

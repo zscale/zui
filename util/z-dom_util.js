@@ -60,3 +60,24 @@ zDomUtil.handleLinks = function(elem, fn) {
     elems[i].addEventListener("click", click_fn);
   }
 };
+
+zDomUtil.escapeHTML = function(str) {
+  if (str == undefined || str == null || str.length == 0) {
+    return "";
+  }
+  var div = document.createElement('div');
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+};
+
+zDomUtil.nl2br = function(str) {
+  return str.replace(/\n/g, "<br />");
+};
+
+zDomUtil.nl2p = function(str) {
+  var lines = str.split("\n\n");
+
+  return lines.map(function(s) {
+    return "<p>" + s.replace(/\n/g, "<br />")  + "</p>";
+  }).join("\n");
+};
