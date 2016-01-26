@@ -170,13 +170,17 @@ zTable = function(table) {
       th.innerHTML = c.title;
 
       if (c.sortable) {
+        var sort_elem = document.createElement("span");
+        sort_elem.classList.add("sort");
+        th.appendChild(sort_elem);
+
         var sort_asc = document.createElement("i");
         sort_asc.classList.add("sort_asc");
-        th.appendChild(sort_asc);
+        sort_elem.appendChild(sort_asc);
 
         var sort_desc = document.createElement("i");
         sort_desc.classList.add("sort_desc");
-        th.appendChild(sort_desc);
+        sort_elem.appendChild(sort_desc);
 
         switch (c.sorted) {
           case "asc":
