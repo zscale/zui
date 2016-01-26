@@ -39,9 +39,15 @@ var zRouter = function(routes) {
     }
 
     for (var i = 0; i < routes.length; i++) {
-      if (path instanceof RegExp) {
-        if (path.match(routes[i].route)) {
-          return routes[i];
+      if (routes[i].route instanceof RegExp) {
+        var match = path.match(routes[i].route);
+        if (match) {
+          var route = {};
+          for (k in routes[i]) {
+            route[k] = routes[i][k];
+          }
+          route.args = match;
+          return route;
         }
       } else {
         if (path === routes[i].route) {
