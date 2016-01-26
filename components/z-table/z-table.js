@@ -242,7 +242,7 @@ zTable = function(table) {
             cell_value = table.empty_cell_value || "—";
           }
 
-          cell_value = $.escapeHTML(cell_value);
+          cell_value = zDomUtil.escapeHTML(cell_value);
         }
 
         td_a.innerHTML = cell_value;
