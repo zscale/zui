@@ -31,30 +31,41 @@
  */
 zHTTP = this.zHTTP || {};
 
-zHTTP.httpGet = function(url, callback) {
+zHTTP.httpGet = function(url, headers, callback) {
   var http = new XMLHttpRequest();
   http.open("GET", url, true);
+  for (var k in headers) {
+    http.setRequestHeader(k, headers[k]);
+  }
+
+  var start = (new Date()).getTime();
   http.send();
 
   var base = this;
   http.onreadystatechange = function() {
     if (http.readyState == 4) {
+      var end = (new Date()).getTime();
+      http.runtime = end - start;
       callback(http);
     }
   }
 };
 
-zHTTP.httpPost = function(url, request, callback) {
+zHTTP.httpPost = function(url, body, headers, callback) {
   var http = new XMLHttpRequest();
   http.open("POST", url, true);
+  for (var k in headers) {
+    http.setRequestHeader(k, headers[k]);
+  }
+
   var start = (new Date()).getTime();
-  http.send(request);
+  http.send(body);
 
   http.onreadystatechange = function() {
     if (http.readyState == 4) {
       var end = (new Date()).getTime();
-      var duration = end - start;
-      callback(http, duration);
+      http.runtime = end - start;
+      callback(http);
     }
   }
 };
