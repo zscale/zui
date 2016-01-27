@@ -42,13 +42,22 @@ var zViewport = function(elem) {
     }
 
     elem.innerHTML = "";
-
     current_view = {};
+
     view.call(current_view, elem, params);
 
     if (current_view.initialize) {
       current_view.initialize.call(current_view);
     }
   };
+
+  this.clear = function() {
+    if (current_view && current_view.destroy) {
+      current_view.destroy();
+    }
+
+    elem.innerHTML = "";
+    current_view = {};
+  }
 
 };
