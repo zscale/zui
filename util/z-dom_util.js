@@ -36,6 +36,14 @@ zDomUtil.replaceContent = function(elem, new_content) {
   elem.appendChild(new_content);
 }
 
+zDomUtil.clearChildren = function(node) {
+  var cur = node.firstChild;
+  while (cur) {
+    node.removeChild(cur);
+    cur = node.firstChild;
+  }
+};
+
 zDomUtil.onClick = function(elem, fn) {
   elem.addEventListener("click", function(e) {
     e.preventDefault();
