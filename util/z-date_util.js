@@ -55,16 +55,76 @@ zDateUtil.printTimeAgo = function(timestamp) {
     var label = (offset == 1)? " second ago" : " seconds ago";
     return offset + label;
   } else if (offset < 3600) {
-    var time = Math.floor(offset / 60);
-    var label = (time == 1)? " minute ago" : " minutes ago";
-    return time + label;
+    var m = Math.floor(offset / 60);
+    var label = (m == 1)? " minute ago" : " minutes ago";
+    return m + label;
   } else if (offset < 86400) {
-    var time =  Math.floor(offset / 3600);
-    var label = (time == 1)? " hour ago" : " hours ago";
-    return time + label;
+    var h =  Math.floor(offset / 3600);
+    var label = (h == 1)? " hour ago" : " hours ago";
+    return h + label;
   } else {
-    var time = Math.floor(offset / 86400);
-    var label = (time == 1)? " day ago" : " days ago";
-    return time + label;
+    var d = Math.floor(offset / 86400);
+    var label = (d == 1)? " day ago" : " days ago";
+    if (d <= 30) {
+      return d + label;
+    }
   }
+
+  return zDateUtil.formatTimestamp(timestamp, "%Y-%m-%d");
 };
+
+zDateUtil.formatTimestamp = function(timestamp, format) {
+  if (!format) {
+    format = "%Y-%m-%d %H:%M:%S";
+  }
+
+  var date = new Date(parseInt(timestamp));
+  var date_str = "";
+
+  var replace = false;
+  for (var i = 0; i < format.length; i++) {
+    if (format[i] == "%") {
+      replace = true;
+      continue;
+    }
+
+    if (!replace) {
+      date_str += format[i];
+      continue;
+    }
+
+    switch (format[i]) {
+      case 'Y':
+        date_str += date.getFullYear();
+        break;
+
+      case 'm':
+        date_str += zNumberUtil.printWithLeadingZero(date.getMonth() + 1);
+        break;
+
+      case 'd':
+        date_str += zNumberUtil.printWithLeadingZero(date.getDate());
+        break;
+
+      case 'H':
+        date_str += zNumberUtil.printWithLeadingZero(date.getHours());
+        break;
+
+      case 'M':
+        date_str += zNumberUtil.printWithLeadingZero(date.getMinutes());
+        break;
+
+      case 'S':
+        date_str += zNumberUtil.printWithLeadingZero(date.getSeconds());
+        break;
+
+      default:
+        date_str += format[i];
+        break;
+    }
+
+    replace = false;
+  }
+
+  return date_str;
+}
