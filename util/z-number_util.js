@@ -99,3 +99,11 @@ zNumberUtil.formatDuration = function(value) {
 zNumberUtil.compareNumbers = function(a, b) {
   return (a ? parseFloat(a) : 0) - (b ? parseFloat(b) : 0);
 }
+
+zNumberUtil.printWithLeadingZero = function(number) {
+  if (parseInt(number) < 10) {
+    return "0" + number;
+  }
+
+  return "" + number;
+};
