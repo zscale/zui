@@ -35,6 +35,7 @@ zTable = function(table) {
   var on_sort = [];
   var on_click = [];
   var on_right_click = [];
+  var on_control_click = [];
 
   this.getColumns = function() {
     return table.columns;
@@ -97,6 +98,10 @@ zTable = function(table) {
 
   this.onRightClick = function(fn) {
     on_right_click.push(fn);
+  }
+
+  this.onControlClick = function(fn) {
+    on_control_click.push(fn);
   }
 
   this.onSort = function(fn) {
@@ -252,6 +257,14 @@ zTable = function(table) {
           }
 
           cell_value = zDomUtil.escapeHTML(cell_value);
+        }
+
+        if (col.is_control) {
+          zDomUtil.onClick(td_a, function() {
+            on_control_click.forEach(function(fn) {
+                fn.apply(td_a, [row, col.key]);
+            });
+          });
         }
 
         td_a.innerHTML = cell_value;
