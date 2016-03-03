@@ -37,7 +37,6 @@ zURLUtil.getPathAndQuery = function(url) {
 
   var path = a.pathname;
   if (a.search) {
-    path += "?";
     path += a.search;
   }
 
@@ -95,3 +94,34 @@ zURLUtil.getParamValue = function(url, key) {
 
   return null;
 };
+
+zURLUtil.addOrModifyParam = function(url, param, new_value) {
+  var a = document.createElement('a');
+  a.href = url;
+
+  var vars = a.search.substr(1).split("&");
+  var new_vars = "";
+  var found = false;
+
+  for (var i = 0; i < vars.length; i++) {
+    if (vars[i].length == 0) {
+      continue;
+    }
+
+    var pair = vars[i].split('=', 2);
+    var val = pair[1];
+    if (pair[0] == param) {
+      val = new_value;
+      found = true;
+    }
+
+    new_vars += pair[0] + "=" + val + "&";
+  }
+
+  if (!found) {
+    new_vars += param + "=" + new_value;
+  }
+
+  a.search = "?" + new_vars;
+  return a.href;
+}
