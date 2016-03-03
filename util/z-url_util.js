@@ -125,3 +125,60 @@ zURLUtil.addOrModifyParam = function(url, param, new_value) {
   a.search = "?" + new_vars;
   return a.href;
 }
+
+zURLUtil.getPath = function(url) {
+  return url.split("?")[0]; // FIXME
+};
+
+zURLUtil.getParams = function(url) {
+  var res = {};
+
+  var a = document.createElement('a');
+  a.href = url;
+  var query_string = a.search.substr(1);
+  var params = query_string.split("&");
+  for (var i = 0; i < params.length; i++) {
+    var p = params[i].split("=");
+
+    var key;
+    var value;
+    switch (p.length) {
+      case 2:
+        value = p[1];
+        /* fallthrough */
+      case 1:
+        key = p[0];
+        break;
+      default:
+        continue;
+    }
+
+    res[decodeURIComponent(key)] = decodeURIComponent(value);
+  }
+
+  return res;
+}
+
+zURLUtil.comparePaths = function(a, b) {
+  var a_path = zURLUtil.getPath(a);
+  var b_path = zURLUtil.getPath(b);
+  var a_params = zURLUtil.getParams(a);
+  var b_params = zURLUtil.getParams(b);
+
+  var params_changed =  {};
+  var keys = Object.keys(a_params).concat(Object.keys(b_params));
+  for (var i = 0; i < keys.length; i++) {
+    if (keys[i].length == 0) {
+      continue;
+    }
+
+    if (a_params[keys[i]] != b_params[keys[i]]) {
+      params_changed[keys[i]] = true;
+    }
+  }
+
+  return {
+    path: a_path != b_path,
+    params: Object.keys(params_changed)
+  };
+}
