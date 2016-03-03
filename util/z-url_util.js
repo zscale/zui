@@ -79,3 +79,19 @@ zURLUtil.buildQueryString = function(params) {
 
   return qs.join("&");
 };
+
+zURLUtil.getParamValue = function(url, key) {
+  var a = document.createElement('a');
+  a.href = url;
+
+  var query_string = a.search.substr(1);
+  var key = encodeURIComponent(key) + "=";
+  var params = query_string.split("&");
+  for (var i = 0; i < params.length; i++) {
+    if (params[i].lastIndexOf(key, 0) > -1) {
+      return decodeURIComponent(params[i].substr(key.length));
+    }
+  }
+
+  return null;
+};
