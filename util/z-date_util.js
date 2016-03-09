@@ -45,7 +45,25 @@ zDateUtil.kMicrosPerSecond = 1000000;
 zDateUtil.kMicrosPerHour = 3600000000;
 zDateUtil.kMicrosPerDay = zDateUtil.kSecondsPerDay * zDateUtil.kMicrosPerSecond;
 
+//FIXLAURA smart guess if micro, milli or seconds
+zDateUtil.getMilliTimestamp = function(timestamp) {
+  var ts_str = timestamp + "";
+  var ts_digit_count = ts_str.length;
+
+  //micro seconds timestamp
+  if (ts_digit_count > 13) {
+    return Math.floor(timestamp / 1000);
+  }
+
+  if (ts_digit_count < 13) {
+    return timestamp * 1000;
+  }
+
+  return timestamp;
+}
+
 zDateUtil.printTimeAgo = function(timestamp) {
+  var test = timestamp + "";
   var now = Date.now();
   var offset = Math.floor((now - timestamp) / 1000);
 
