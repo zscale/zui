@@ -126,6 +126,52 @@ zURLUtil.addOrModifyParam = function(url, param, new_value) {
   return a.href;
 }
 
+/* adds for each value param to the url e.g. device=mobile&device=desktop
+*/
+zURLUtil.addOrModifyParamList = function(url, param, values) {
+  var a = document.createElement('a');
+  a.href = url;
+
+  var vars = a.search.substr(1).split("&");
+  var new_vars = [];
+
+  for (var i = 0; i < vars.length; i++) {
+    if (vars[i].length == 0) {
+      continue;
+    }
+
+    var pair = vars[i].split('=', 2);
+    if (pair[0] != param) {
+      new_vars.push(vars[i]);
+    }
+  }
+
+  values.forEach(function(val) {
+    new_vars.push(param + "=" + val);
+  });
+
+  a.search = "?" + new_vars.join("&");
+  return a.href;
+};
+
+zURLUtil.getParamValueList = function(url, key) {
+  var a = document.createElement('a');
+  a.href = url;
+
+  var values = [];
+
+  var query_string = a.search.substr(1);
+  var key = encodeURIComponent(key) + "=";
+  var params = query_string.split("&");
+  for (var i = 0; i < params.length; i++) {
+    if (params[i].lastIndexOf(key, 0) > -1) {
+      values.push(decodeURIComponent(params[i].substr(key.length)));
+    }
+  }
+
+  return values;
+}
+
 zURLUtil.getPath = function(url) {
   return url.split("?")[0]; // FIXME
 };
